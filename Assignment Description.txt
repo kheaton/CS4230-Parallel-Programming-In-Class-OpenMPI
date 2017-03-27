@@ -1,0 +1,29 @@
+In class we will develop an initial implementation of the Matrix Multiply with 1D Row block layout from pgs. 29 and 30 of Lecture 15.  
+I will go over some details in class.  But here is a sketch of what you need to do:
+
+0. To simplify, we'll set number of processors P = 2 and matrix size N = 4 (4x4 matrices) in your source code.  
+
+1. Initialize input data -- you can use the python script from SVD or you can just initialize in the source code in whatever way works for you.
+
+2. Call MPI_Init, MPI_Comm_rank, MPI_Comm_size and MPI_Finalize.  To do this, you need to add "#include mph.h" into your source code.  
+Here you may want to try to print something from each rank to see that you have successfully launched 2 processes.  
+You'll need to do a couple of things on kingspeak to make this work:
+	a. Load MPI -- let's use gcc and openmpi.  Then you type "module load gcc openmpi"
+	b. Compile using mpicc and standard flags
+	c. Run using mpiexec -n 2 <executable> (this runs in interactive mode -- better if you can use slurm)
+
+3. Call MPI_Scatter to distribute the data for "a" and "b"
+
+4. Calculate the initial N/P x N/P block of c on each process using the "b" and original "a" partitions.
+
+5. Use nonblocking send/receive for the other "a" partition.
+
+6. Do subcomputation again with new "a" partition to produce a different block of "c".
+
+7. Validate result.
+
+ 
+
+You will be graded on turning the code in and having some semblance of going in the right direction.  
+It is probably best to have compiled code and some portion of the steps working.  
+This will be a part of the assignment due next week.
